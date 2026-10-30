@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Interactive Resume</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="container">
+    
+    <!-- Header Section -->
+    <header>
+      <div class="header-content">
+        <h1>Alex Morgan</h1>
+        <p>Full-Stack Software Engineer</p>
+        <div class="contact-info">
+          <span>📧 alex.morgan@example.com</span>
+          <span>📱 (555) 019-2834</span>
+          <span>📍 San Francisco, CA</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Professional Summary -->
+    <section>
+      <h2>Professional Summary</h2>
+      <p>Results-driven Software Engineer with 5+ years of experience building scalable web applications, responsive user interfaces, and robust backend microservices. Passionate about semantic web standards, performant CSS architectures, and delivering clean, maintainable codebases.</p>
+    </section>
+
+    <!-- Skills Section -->
+    <section>
+      <h2>Technical Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-tag">HTML5 / CSS3</div>
+        <div class="skill-tag">JavaScript (ES6+)</div>
+        <div class="skill-tag">TypeScript</div>
+        <div class="skill-tag">React / Next.js</div>
+        <div class="skill-tag">Node.js</div>
+        <div class="skill-tag">Git / GitHub</div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section>
+      <h2>Work Experience</h2>
+      
+      <article class="item">
+        <div class="item-header">
+          <h3>Senior Frontend Developer — TechCorp</h3>
+          <span class="date">2022 – Present</span>
+        </div>
+        <p>Led client-side architecture for SaaS platform, improving page performance by 35% through semantic structure optimization and modern CSS techniques.</p>
+      </article>
+
+      <article class="item">
+        <div class="item-header">
+          <h3>Web Developer — Creative Web Solutions</h3>
+          <span class="date">2020 – 2022</span>
+        </div>
+        <p>Developed responsive, accessible client websites and custom web applications utilizing HTML5, standard JavaScript libraries, and REST APIs.</p>
+      </article>
+    </section>
+
+    <!-- Portfolio Gallery -->
+    <section>
+      <h2>Project Gallery</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openModal('https://picsum.photos/id/1/800/600')">
+          <img src="https://picsum.photos/id/1/400/225" alt="E-commerce Dashboard Project">
+          <div class="gallery-caption">E-commerce Dashboard</div>
+        </div>
+        <div class="gallery-item" onclick="openModal('https://picsum.photos/id/180/800/600')">
+          <img src="https://picsum.photos/id/180/400/225" alt="Analytics Web App">
+          <div class="gallery-caption">Analytics Web App</div>
+        </div>
+        <div class="gallery-item" onclick="openModal('https://picsum.photos/id/119/800/600')">
+          <img src="https://picsum.photos/id/119/400/225" alt="Mobile Banking App">
+          <div class="gallery-caption">Mobile Banking App</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form with Validation -->
+    <section>
+      <h2>Contact Me</h2>
+      <form id="contactForm" novalidate>
+        <div class="form-group" id="group-name">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" placeholder="John Doe">
+          <span class="error-message">Please enter your full name.</span>
+        </div>
+
+        <div class="form-group" id="group-email">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="john@example.com">
+          <span class="error-message">Please enter a valid email address.</span>
+        </div>
+
+        <div class="form-group" id="group-message">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" rows="4" placeholder="Your message here..."></textarea>
+          <span class="error-message">Message must be at least 10 characters long.</span>
+        </div>
+
+        <button type="submit">Send Message</button>
+        <div id="formStatus" class="form-status"></div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Gallery Lightbox Modal -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <img id="modalImg" class="modal-content" src="" alt="Enlarged Project Preview">
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // --- Image Gallery Lightbox ---
+    function openModal(imgSrc) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = imgSrc;
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').classList.remove('active');
+    }
+
+    // --- Form Validation Logic ---
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+    const formStatus = document.getElementById('formStatus');
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    function validateField(field, group, isValid) {
+      if (!isValid) {
+        group.classList.add('invalid');
+        return false;
+      } else {
+        group.classList.remove('invalid');
+        return true;
+      }
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const isNameValid = validateField(
+        nameInput, 
+        document.getElementById('group-name'), 
+        nameInput.value.trim() !== ''
+      );
+
+      const isEmailValid = validateField(
+        emailInput, 
+        document.getElementById('group-email'), 
+        validateEmail(emailInput.value.trim())
+      );
+
+      const isMessageValid = validateField(
+        messageInput, 
+        document.getElementById('group-message'), 
+        messageInput.value.trim().length >= 10
+      );
+
+      if (isNameValid && isEmailValid && isMessageValid) {
+        formStatus.className = 'form-status success';
+        formStatus.textContent = 'Thank you! Your message has been validated and submitted successfully.';
+        form.reset();
+      } else {
+        formStatus.className = 'form-status';
+        formStatus.textContent = '';
+      }
+    });
+
+    // Real-time error clearing on input
+    [nameInput, emailInput, messageInput].forEach(input => {
+      input.addEventListener('input', () => {
+        input.parentElement.classList.remove('invalid');
+      });
+    });
+  </script>
+</body>
+</html>
